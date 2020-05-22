@@ -9,6 +9,7 @@ public class GrandCote {
 
     GrandCote(Piece pieces[], int orientation) throws Exception {
         this.orientation = orientation;
+        this.nbNonLisse = 0;
         switch (orientation % 4) {
             case 0:
                 distanceDuCentreH++;
@@ -30,6 +31,7 @@ public class GrandCote {
 
     public void setPieces(Piece[] pieces) {
         // System.out.println("setPieces " + orientation);
+        this.nbNonLisse = 0;
         this.pieces = pieces;
         switch (orientation % 4) {
             case 0:

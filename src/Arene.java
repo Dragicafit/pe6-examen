@@ -11,6 +11,8 @@ public class Arene {
     Piece arene[][];
     int hauteur;
     int largeur;
+    int decalageH;
+    int decalageL;
     GrandCote grandCotes[];
     int points;
 
@@ -37,8 +39,6 @@ public class Arene {
 
     void render() {
         arene = new Piece[hauteur][largeur];
-        int decalageH = -grandCotes[0].distanceDuCentreH;
-        int decalageL = -grandCotes[3].distanceDuCentreL;
         for (Piece piecePosee : piecesPosees) {
             int h = piecePosee.distanceDuCentreH + decalageH;
             int l = piecePosee.distanceDuCentreL + decalageL;
@@ -52,6 +52,21 @@ public class Arene {
 
     boolean ajouteRangee() throws Exception {
         // System.out.println("ajouteRangee " + largeur + "*" + hauteur);
+        int newLargeur = grandCotes[0].pieces.length;
+        int newHauteur = grandCotes[1].pieces.length;
+
+        int newPoints = newLargeur * newHauteur;
+        for (GrandCote grandCote : grandCotes) {
+            newPoints -= grandCote.nbNonLisse * 2;
+        }
+        if (newPoints > this.points) {
+            decalageH = -grandCotes[0].distanceDuCentreH;
+            decalageL = -grandCotes[3].distanceDuCentreL;
+            this.largeur = newLargeur;
+            this.hauteur = newHauteur;
+            this.points = newPoints;
+        }
+
         GrandCote[] ajouts = minCote();
         for (GrandCote ajout : ajouts) {
             if (ajouteRangee(ajout))
@@ -92,10 +107,6 @@ public class Arene {
         this.piecesRestantes = newPiecesRestantes;
         this.piecesPosees = newPiecesPosees;
         ajout.setPieces(nouveau);
-        if (ajout.orientation % 2 == 0)
-            hauteur++;
-        else
-            largeur++;
         for (GrandCote grandCote : grandCotes)
             grandCote.addPieces(ajout);
         // for (GrandCote grandCote : grandCotes) System.out.println(grandCote);
