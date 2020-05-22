@@ -14,14 +14,16 @@ public class App {
     Arene arene;
 
     public static void main(String[] args) throws Exception {
-        // new App("input2.in");
         for (String arg : args) {
-            try {
-                new App(arg);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            new Thread() {
+                public void run() {
+                    try {
+                        new App(arg);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
         }
     }
 
@@ -39,6 +41,7 @@ public class App {
             for (int i = 0; i < nbPiece; i++) {
                 pieces.add(new Piece(sc.nextLine().replace(" ", ""), hauteur, largeur, i));
             }
+            sc.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
