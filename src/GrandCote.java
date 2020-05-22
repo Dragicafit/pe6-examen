@@ -29,7 +29,7 @@ public class GrandCote {
         setPieces(pieces);
     }
 
-    public void setPieces(Piece[] pieces) {
+    public void setPieces(Piece[] pieces) {// initialise un nouveau coté
         // System.out.println("setPieces " + orientation);
         this.nbNonLisse = 0;
         this.pieces = pieces;
@@ -62,7 +62,7 @@ public class GrandCote {
         }
     }
 
-    void addPieces(GrandCote ajout) {
+    void addPieces(GrandCote ajout) {// ajuste les cotés adjacents
         if (this.orientation % 2 == ajout.orientation % 2)
             return;
         Piece newPieces[] = new Piece[pieces.length + 1];

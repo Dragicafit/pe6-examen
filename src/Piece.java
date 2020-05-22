@@ -17,6 +17,8 @@ public class Piece {
         this.id = id;
         this.hauteur = hauteur;
         this.largeur = largeur;
+        distanceDuCentreH = 0;
+        distanceDuCentreL = 0;
         this.orientation = new Random().nextInt(4);
         int precedent = 0;
         int suivant = precedent + largeur;
