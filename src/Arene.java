@@ -60,9 +60,10 @@ public class Arene {
         return false;
     }
 
-    int rechercheCompatible(GrandCote ajout, int i, Piece[] nouveau) throws Exception {
-        for (int j = 0; j < piecesRestantes.size(); j++) {
-            Piece piece = piecesRestantes.get(j);
+    int rechercheCompatible(GrandCote ajout, int i, Piece[] nouveau, ArrayList<Piece> newPiecesRestantes)
+            throws Exception {
+        for (int j = 0; j < newPiecesRestantes.size(); j++) {
+            Piece piece = newPiecesRestantes.get(j);
             for (int k = 0; k < 4; k++) {
                 piece.orientation = (piece.orientation + 1) % 4;
                 if (!piece.emboite(ajout.pieces[i], ajout.orientation))
@@ -78,18 +79,18 @@ public class Arene {
 
     boolean ajouteRangee(GrandCote ajout) throws Exception {
         Piece[] nouveau = new Piece[ajout.pieces.length];
-        ArrayList<Piece> piecesRestantes = new ArrayList<>(this.piecesRestantes);
-        ArrayList<Piece> piecesPosees = new ArrayList<>(this.piecesPosees);
+        ArrayList<Piece> newPiecesRestantes = new ArrayList<>(this.piecesRestantes);
+        ArrayList<Piece> newPiecesPosees = new ArrayList<>(this.piecesPosees);
 
         for (int i = 0; i < ajout.pieces.length; i++) {
-            int j = rechercheCompatible(ajout, i, nouveau);
+            int j = rechercheCompatible(ajout, i, nouveau, newPiecesRestantes);
             if (nouveau[i] == null)
                 return false;
-            piecesRestantes.remove(j);
-            piecesPosees.add(nouveau[i]);
+            newPiecesRestantes.remove(j);
+            newPiecesPosees.add(nouveau[i]);
         }
-        this.piecesRestantes = piecesRestantes;
-        this.piecesPosees = piecesPosees;
+        this.piecesRestantes = newPiecesRestantes;
+        this.piecesPosees = newPiecesPosees;
         ajout.setPieces(nouveau);
         if (ajout.orientation % 2 == 0)
             hauteur++;
