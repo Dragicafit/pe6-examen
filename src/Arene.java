@@ -51,7 +51,7 @@ public class Arene {
     }
 
     boolean ajouteRangee() throws Exception {
-        // System.out.println("ajouteRangee " + largeur + "*" + hauteur);
+        // vérifie si le nouveau est meilleur
         int newLargeur = grandCotes[0].pieces.length;
         int newHauteur = grandCotes[1].pieces.length;
 
@@ -77,6 +77,8 @@ public class Arene {
 
     int rechercheCompatible(GrandCote ajout, int i, Piece[] nouveau, ArrayList<Piece> newPiecesRestantes)
             throws Exception {
+        Collections.shuffle(newPiecesRestantes); // random à chaque tirage
+
         for (int j = 0; j < newPiecesRestantes.size(); j++) {
             Piece piece = newPiecesRestantes.get(j);
             for (int k = 0; k < 4; k++) {
@@ -92,7 +94,7 @@ public class Arene {
         return 0;
     }
 
-    boolean ajouteRangee(GrandCote ajout) throws Exception {
+    boolean ajouteRangee(GrandCote ajout) throws Exception {// tente d'ajouter une rangee sur un coté
         Piece[] nouveau = new Piece[ajout.pieces.length];
         ArrayList<Piece> newPiecesRestantes = new ArrayList<>(this.piecesRestantes);
         ArrayList<Piece> newPiecesPosees = new ArrayList<>(this.piecesPosees);
@@ -100,7 +102,7 @@ public class Arene {
         for (int i = 0; i < ajout.pieces.length; i++) {
             int j = rechercheCompatible(ajout, i, nouveau, newPiecesRestantes);
             if (nouveau[i] == null)
-                return false;
+                return false;// non trouvé
             newPiecesRestantes.remove(j);
             newPiecesPosees.add(nouveau[i]);
         }
@@ -114,7 +116,7 @@ public class Arene {
         return true;
     }
 
-    GrandCote[] minCote() {
+    GrandCote[] minCote() {// tri les coté par paies
         GrandCote grandCotesTri[] = grandCotes.clone();
         Arrays.sort(grandCotesTri, new Comparator<GrandCote>() {
             public int compare(GrandCote a, GrandCote b) {
