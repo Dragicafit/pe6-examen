@@ -1,5 +1,7 @@
 package src;
 
+import java.util.Random;
+
 public class Piece {
     public Cote cotes[];
     int hauteur;
@@ -15,19 +17,20 @@ public class Piece {
         this.id = id;
         this.hauteur = hauteur;
         this.largeur = largeur;
+        this.orientation = new Random().nextInt(4);
         int precedent = 0;
         int suivant = precedent + largeur;
         cotes = new Cote[4];
-        cotes[0] = new Cote(ligne.substring(0, suivant), 0);
+        cotes[0] = new Cote(ligne.substring(0, suivant));
         precedent = suivant;
         suivant = precedent + hauteur;
-        cotes[1] = new Cote(ligne.substring(precedent, suivant), 1);
+        cotes[1] = new Cote(ligne.substring(precedent, suivant));
         precedent = suivant;
         suivant = precedent + largeur;
-        cotes[2] = new Cote(ligne.substring(precedent, suivant), 2);
+        cotes[2] = new Cote(ligne.substring(precedent, suivant));
         precedent = suivant;
         suivant = precedent + hauteur;
-        cotes[3] = new Cote(ligne.substring(precedent, suivant), 3);
+        cotes[3] = new Cote(ligne.substring(precedent, suivant));
 
     }
 
@@ -38,7 +41,7 @@ public class Piece {
     }
 
     Cote getCote(int orientation) {
-        return cotes[orientation % 4];
+        return cotes[(orientation + this.orientation) % 4];
     }
 
     @Override

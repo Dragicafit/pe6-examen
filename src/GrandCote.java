@@ -29,7 +29,7 @@ public class GrandCote {
     }
 
     public void setPieces(Piece[] pieces) {
-        System.out.println("setPieces " + orientation);
+        // System.out.println("setPieces " + orientation);
         this.pieces = pieces;
         switch (orientation % 4) {
             case 0:
@@ -63,7 +63,6 @@ public class GrandCote {
     void addPieces(GrandCote ajout) {
         if (this.orientation % 2 == ajout.orientation % 2)
             return;
-        System.out.println("addPieces de\n" + ajout + "\ndans\n" + this);
         Piece newPieces[] = new Piece[pieces.length + 1];
         if ((ajout.orientation + 3) % 4 == this.orientation) {
             for (int i = 0; i < pieces.length; i++)
@@ -92,7 +91,6 @@ public class GrandCote {
             }
         }
         pieces = newPieces;
-        System.out.println("fin addPieces de\n" + ajout + "\ndans\n" + this);
     }
 
     @Override

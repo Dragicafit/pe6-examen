@@ -22,6 +22,7 @@ public class Arene {
         Collections.shuffle(piecesRestantes);
 
         Piece centre = piecesRestantes.get(0);
+        centre.orientation = 0;
         piecesRestantes.remove(0);
         grandCotes = new GrandCote[4];
         for (int i = 0; i < 4; i++)
@@ -50,7 +51,7 @@ public class Arene {
     }
 
     boolean ajouteRangee() throws Exception {
-        System.out.println("ajouteRangee " + largeur + "*" + hauteur);
+        // System.out.println("ajouteRangee " + largeur + "*" + hauteur);
         GrandCote[] ajouts = minCote();
         for (GrandCote ajout : ajouts) {
             if (ajouteRangee(ajout))
@@ -59,23 +60,29 @@ public class Arene {
         return false;
     }
 
+    int rechercheCompatible(GrandCote ajout, int i, Piece[] nouveau) throws Exception {
+        for (int j = 0; j < piecesRestantes.size(); j++) {
+            Piece piece = piecesRestantes.get(j);
+            for (int k = 0; k < 4; k++) {
+                piece.orientation = (piece.orientation + 1) % 4;
+                if (!piece.emboite(ajout.pieces[i], ajout.orientation))
+                    continue;
+                if (i > 0 && !piece.emboite(nouveau[i - 1], ajout.orientation + 1))
+                    continue;
+                nouveau[i] = piece;
+                return j;
+            }
+        }
+        return 0;
+    }
+
     boolean ajouteRangee(GrandCote ajout) throws Exception {
         Piece[] nouveau = new Piece[ajout.pieces.length];
         ArrayList<Piece> piecesRestantes = new ArrayList<>(this.piecesRestantes);
         ArrayList<Piece> piecesPosees = new ArrayList<>(this.piecesPosees);
 
         for (int i = 0; i < ajout.pieces.length; i++) {
-            int j = -1;
-            for (Piece piece : piecesRestantes) {
-                j++;
-                // rotation
-                if (!piece.emboite(ajout.pieces[i], ajout.orientation))
-                    continue;
-                if (i > 0 && !piece.emboite(nouveau[i - 1], ajout.orientation + 1))
-                    continue;
-                nouveau[i] = piece;
-                break;
-            }
+            int j = rechercheCompatible(ajout, i, nouveau);
             if (nouveau[i] == null)
                 return false;
             piecesRestantes.remove(j);
@@ -90,10 +97,7 @@ public class Arene {
             largeur++;
         for (GrandCote grandCote : grandCotes)
             grandCote.addPieces(ajout);
-        render();
-        System.out.println(this);
-        for (GrandCote grandCote : grandCotes)
-            System.out.println(grandCote);
+        // for (GrandCote grandCote : grandCotes) System.out.println(grandCote);
 
         return true;
     }

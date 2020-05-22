@@ -2,9 +2,6 @@ package src;
 
 public class Test {
     public static void main(String[] args) throws Exception {
-        Piece pieceACGCZAGG = new Piece("CZTGZZGCZTAZZZAT", 4, 4, 0);
-        Piece pieceTZCCGTGC = new Piece("GGZGGGGACCCCGAZC", 4, 4, 0);
-        System.out.println(pieceACGCZAGG.emboite(pieceTZCCGTGC, 0));
         testForme();
         testCote();
         testPiece();
@@ -48,16 +45,16 @@ public class Test {
     }
 
     static void testCote() throws Exception {
-        Cote coteAC0 = new Cote("AC", 0);
-        Cote coteAC2 = new Cote("AC", 2);
-        Cote coteCA0 = new Cote("CA", 0);
-        Cote coteCA2 = new Cote("CA", 2);
-        Cote coteTG0 = new Cote("TG", 0);
-        Cote coteTG2 = new Cote("TG", 2);
-        Cote coteGT0 = new Cote("GT", 0);
-        Cote coteGT2 = new Cote("GT", 2);
+        Cote coteAC0 = new Cote("AC");
+        Cote coteAC2 = new Cote("AC");
+        Cote coteCA0 = new Cote("CA");
+        Cote coteCA2 = new Cote("CA");
+        Cote coteTG0 = new Cote("TG");
+        Cote coteTG2 = new Cote("TG");
+        Cote coteGT0 = new Cote("GT");
+        Cote coteGT2 = new Cote("GT");
         try {
-            new Cote("ACTGJ", 0);
+            new Cote("ACTGJ");
             System.out.println("erreur coteACTGJ non valide");
         } catch (Exception e) {
         }
@@ -86,11 +83,8 @@ public class Test {
         if (coteAC2.emboite(coteAC0))
             System.out.println("erreur coteAC2 emboite coteAC0");
 
-        try {
-            coteAC0.emboite(coteAC0);
+        if (coteAC0.emboite(coteAC0))
             System.out.println("erreur coteAC0 emboite coteAC0");
-        } catch (Exception e) {
-        }
     }
 
     static void testPiece() throws Exception {
@@ -120,15 +114,23 @@ public class Test {
         }
 
         for (int i = 0; i < 4; i++) {
-            if (!pieceACGCZAGG.emboite(pieceTZCCGTGC, i))
-                System.out.println("erreur pieceACGCZAGG emboite pieceTZCCGTGC " + i);
+            for (int j = 0; j < 4; j++) {
+                pieceACGCZAGG.orientation = j;
+                for (int k = 0; k < 4; k++) {
+                    pieceTZCCGTGC.orientation = k;
+                    if ((pieceACGCZAGG.emboite(pieceTZCCGTGC,
+                            i)) != (pieceACGCZAGG.orientation == pieceTZCCGTGC.orientation))
+                        System.out.println("erreur pieceACGCZAGG emboite pieceTZCCGTGC " + i);
+                }
+            }
         }
 
         for (int i = 0; i < 4; i++) {
             if (pieceACGCZAGG.emboite(pieceACGCZAGG, i))
                 System.out.println("erreur pieceACGCZAGG emboite pieceACGCZAGG " + i);
         }
-
+        AAAAAAAC.orientation = 0;
+        AAGTAAAA.orientation = 0;
         for (int i = 0; i < 4; i++) {
             if (AAAAAAAC.emboite(AAGTAAAA, i) && i != 1)
                 System.out.println("erreur AAAAAAAC emboite AAGTAAAA " + i);
